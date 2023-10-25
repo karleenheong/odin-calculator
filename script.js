@@ -17,6 +17,15 @@ function clearScreen(){
   lastButtonWasNum = false;
 }
 
+function handleBackspace(){
+  if((displayValue !== null || displayValue !== "0") && lastButtonWasNum){
+    let deleted = displayValue.substring(0, displayValue.length-1);
+    if(deleted === ""){deleted = "0"};
+    displayValue = deleted;
+    display.textContent = displayValue;
+  }
+}
+
 function updateText(newInput){
   if(newInput === "." && displayValue.includes(newInput)){return;}
   //append to string if last button was num
@@ -41,7 +50,9 @@ const six = document.querySelector("#six");
 const seven = document.querySelector("#seven");
 const eight = document.querySelector("#eight");
 const nine = document.querySelector("#nine");
+
 const dot = document.querySelector("#dot");
+const backspace = document.querySelector("#backspace");
 
 zero.addEventListener("click", () => {
   updateText("0");
@@ -86,7 +97,7 @@ nine.addEventListener("click", () => {
 dot.addEventListener("click", () => {
   updateText(".");
 });
-
+backspace.addEventListener("click", handleBackspace);
 
 //get references to operators
 const divideBtn = document.querySelector("#divide");
