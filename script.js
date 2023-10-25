@@ -3,6 +3,7 @@ let globalNum2 = null;
 let globalOperator = null;
 let lastButtonWasNum = false;
 let displayValue = null;
+const DISPLAY_DIGITS = 8;
 
 const display = document.querySelector(".display");
 
@@ -153,8 +154,8 @@ function divide(a, b){
 }
 
 function operate(operator, n1, n2){
-  let result;
-  if(n1 !== null && n2 !== null && globalOperator != null){
+  let result = null;
+  if(n1 !== null && n2 !== null && globalOperator !== null){
     console.log(globalNum1);
     console.log(globalOperator);
     console.log(globalNum2);
@@ -179,10 +180,21 @@ function operate(operator, n1, n2){
       default:
         console.log("Something's wrong");
     }
-    if(result != undefined){
+    if(result !== null){
       globalNum1 = globalNum2;
       globalNum2 = result;
-      updateText(result.toString());
+      if(result.toString().length > DISPLAY_DIGITS){
+        let truncated = Math.trunc(result);
+        if(truncated.toString().length >= DISPLAY_DIGITS){
+          updateText(Math.round(result).toString());
+        } else {
+          let length = truncated.toString().length;
+          let decimals = DISPLAY_DIGITS - length;
+          updateText(result.toFixed(decimals));
+        }
+      } else {
+        updateText(result.toString());
+      }
     }
   }
   if(operator !== "="){
