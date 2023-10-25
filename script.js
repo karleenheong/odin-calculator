@@ -18,6 +18,7 @@ function clearScreen(){
 }
 
 function updateText(newInput){
+  if(newInput === "." && displayValue.includes(newInput)){return;}
   //append to string if last button was num
   if(lastButtonWasNum && displayValue !== "0"){
     displayValue += newInput;
@@ -40,6 +41,7 @@ const six = document.querySelector("#six");
 const seven = document.querySelector("#seven");
 const eight = document.querySelector("#eight");
 const nine = document.querySelector("#nine");
+const dot = document.querySelector("#dot");
 
 zero.addEventListener("click", () => {
   updateText("0");
@@ -81,6 +83,9 @@ nine.addEventListener("click", () => {
   updateText("9");
   lastButtonWasNum = true;
 })
+dot.addEventListener("click", () => {
+  updateText(".");
+});
 
 
 //get references to operators
@@ -136,6 +141,7 @@ equalsBtn.addEventListener("click", () => {
 
 const clear = document.querySelector("#clear");
 clear.addEventListener("click", clearScreen);
+
 
 function add(a, b){
   return a + b;
