@@ -1,0 +1,70 @@
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 200px;
+  height: auto;
+  align-items: center;
+  justify-content: center;
+  border: navy solid 3px;
+}
+
+.keypad {
+  display: flex;
+}
+
+.buttons {
+  display: flex;
+  flex-wrap: wrap;
+  width: 75%;
+}
+
+.operators {
+  width: 25%;
+}
+
+button {
+  width: 50px;
+  height: 50px;
+  font-size: 24px;
+  color: white;
+  border-color: navy;
+}
+
+#zero {
+  width: 100px;
+}
+
+.operator {
+  background-color: green;
+}
+
+.symbol {
+  background-color: yellowgreen;
+}
+
+.numbers {
+  background-color: darkblue;
+}
+
+.displayPanel {
+  height: 50px;
+  width: 100%;
+  display: flex;
+  background-color: darkred;
+  justify-content: right;
+  align-items: center;
+}
+
+.display {
+  font-family: "Xenara", sans-serif;
+  font-size: 38px;
+  color: white;
+  margin: 5px;
+}
