@@ -6,6 +6,7 @@ let displayValue = null;
 const DISPLAY_DIGITS = 8;
 
 const display = document.querySelector(".display");
+clearScreen();
 
 //clear function
 function clearScreen(){
@@ -34,12 +35,21 @@ function handleNegativeBtn(){
 }
 
 function updateText(newInput){
-  if(newInput === "." && displayValue.includes(newInput)){return;}
-  //append to string if last button was num
-  if(lastButtonWasNum && displayValue !== "0"){
-    displayValue += newInput;
-  } else {
-    displayValue = newInput;
+  switch(newInput){
+    case ".":
+      if(displayValue.includes(newInput)){return;}
+      else if(displayValue === "0"){
+        displayValue = "0.";
+      } else{
+        displayValue += newInput;
+      }
+      break;
+    default:
+      if(displayValue === "0"){
+        displayValue = newInput;
+      } else {
+        displayValue += newInput;
+      }
   }
   //update display
   display.textContent = displayValue;
@@ -103,6 +113,7 @@ nine.addEventListener("click", () => {
   lastButtonWasNum = true;
 })
 dot.addEventListener("click", () => {
+  lastButtonWasNum = true;
   updateText(".");
 });
 backspace.addEventListener("click", handleBackspace);
@@ -116,8 +127,6 @@ const minusBtn = document.querySelector("#minus");
 const equalsBtn = document.querySelector("#equals");
 
 function saveNums(){
-  //if no input do nothing
-  if(displayValue === null) {return;}
   //if both are null save to num1
   if(globalNum1 === null && globalNum2 === null){
     globalNum1 = +displayValue;
@@ -131,6 +140,7 @@ function saveNums(){
     globalNum1 = globalNum2;
     globalNum2 = +displayValue;
   }
+  displayValue = "0";
 }
 
 divideBtn.addEventListener("click", () => {
