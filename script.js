@@ -1,19 +1,29 @@
-let num1 = 0;
-let num2 = 0;
-let operator;
+let globalNum1 = null;
+let globalNum2 = null;
+let globalOperator = null;
+let lastButtonWasNum = false;
+let displayValue = null;
 
 const display = document.querySelector(".display");
-//initial display
-let displayValue = "0";
+
+//clear function
+function clearScreen(){
+  displayValue = "0";
+  globalNum1 = null;
+  globalNum2 = null;
+  globalOperator = null;
+  updateText(displayValue);
+  lastButtonWasNum = false;
+}
 
 function updateText(newInput){
-  if(displayValue === "0"){
-    displayValue = newInput;
-  } else if(newInput === "clear"){
-    displayValue = "0";
-  } else {
+  //append to string if last button was num
+  if(lastButtonWasNum && displayValue !== "0"){
     displayValue += newInput;
+  } else {
+    displayValue = newInput;
   }
+  //update display
   display.textContent = displayValue;
 }
 
@@ -32,49 +42,99 @@ const nine = document.querySelector("#nine");
 
 zero.addEventListener("click", () => {
   updateText("0");
+  lastButtonWasNum = true;
 })
 one.addEventListener("click", () => {
   updateText("1");
+  lastButtonWasNum = true;
 })
 two.addEventListener("click", () => {
   updateText("2");
+  lastButtonWasNum = true;
 })
 three.addEventListener("click", () => {
   updateText("3");
+  lastButtonWasNum = true;
 })
 four.addEventListener("click", () => {
   updateText("4");
+  lastButtonWasNum = true;
 })
 five.addEventListener("click", () => {
   updateText("5");
+  lastButtonWasNum = true;
 })
 six.addEventListener("click", () => {
   updateText("6");
+  lastButtonWasNum = true;
 })
 seven.addEventListener("click", () => {
   updateText("7");
+  lastButtonWasNum = true;
 })
 eight.addEventListener("click", () => {
   updateText("8");
+  lastButtonWasNum = true;
 })
 nine.addEventListener("click", () => {
   updateText("9");
+  lastButtonWasNum = true;
 })
 
 
 //get references to operators
-const division = document.querySelector("#divide");
-const times= document.querySelector("#multiply");
-const plus = document.querySelector("#plus");
-const minus = document.querySelector("#minus");
-const equals = document.querySelector("#equals");
+const divideBtn = document.querySelector("#divide");
+const timesBtn= document.querySelector("#multiply");
+const plusBtn = document.querySelector("#plus");
+const minusBtn = document.querySelector("#minus");
+const equalsBtn = document.querySelector("#equals");
 
-//clear function
-const clear = document.querySelector("#clear");
-clear.addEventListener("click", () => {
- updateText("clear");
+function saveNums(){
+  //if no input do nothing
+  if(displayValue === null) {return;}
+  //if both are null save to num1
+  if(globalNum1 === null && globalNum2 === null){
+    globalNum1 = +displayValue;
+  }
+  //if only num2 empty save to that
+  else if(globalNum2 === null){
+    globalNum2 = +displayValue;
+  }
+  //if both are occupied shift num2 to num1 and save new as num2
+  else {
+    globalNum1 = globalNum2;
+    globalNum2 = +displayValue;
+  }
+}
+
+divideBtn.addEventListener("click", () => {
+  lastButtonWasNum = false;
+  saveNums();
+  operate("/", globalNum1, globalNum2);
+});
+timesBtn.addEventListener("click", () => {
+  lastButtonWasNum = false;
+  saveNums();
+  operate("*", globalNum1, globalNum2);
+});
+minusBtn.addEventListener("click", () => {
+  lastButtonWasNum = false;
+  saveNums();
+  operate("-", globalNum1, globalNum2);
+});
+plusBtn.addEventListener("click", () => {
+  lastButtonWasNum = false;
+  saveNums();
+  operate("+", globalNum1, globalNum2);
+});
+equalsBtn.addEventListener("click", () => {
+  lastButtonWasNum = false;
+  saveNums();
+  operate("=", globalNum1, globalNum2);
 });
 
+const clear = document.querySelector("#clear");
+clear.addEventListener("click", clearScreen);
 
 function add(a, b){
   return a + b;
@@ -92,22 +152,43 @@ function divide(a, b){
   return a / b;
 }
 
-function operate(operator, num1, num2){
-  switch(operator) {
-    case "+":
-      display.textContent = add(num1, num2);
-      break;
-    case "-":
-      display.textContent = subtract(num1, num2);
-      break;
-    case "*":
-      display.textContent = multiply(num1, num2);
-      break;
-    case "/":
-      display.textContent = divide(num1, num2);
-      break;
-    default:
-      console.log("Something's wrong");
+function operate(operator, n1, n2){
+  let result;
+  if(n1 !== null && n2 !== null && globalOperator != null){
+    console.log(globalNum1);
+    console.log(globalOperator);
+    console.log(globalNum2);
+
+    switch(globalOperator) {
+      case "+":
+        result = add(n1, n2);
+        break;
+      case "-":
+        result = subtract(n1, n2);
+        break;
+      case "*":
+        result = multiply(n1, n2);
+        break;
+      case "/":
+        if(n2 === 0){
+          display.textContent = "I REFUSE!";
+        } else {
+          result = divide(n1, n2);
+        }
+        break;
+      default:
+        console.log("Something's wrong");
+    }
+    if(result != undefined){
+      globalNum1 = globalNum2;
+      globalNum2 = result;
+      updateText(result.toString());
+    }
+  }
+  if(operator !== "="){
+    globalOperator = operator;
+  } else {
+    globalOperator = null;
   }
 }
 
