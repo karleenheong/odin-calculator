@@ -26,6 +26,13 @@ function handleBackspace(){
   }
 }
 
+function handleNegativeBtn(){
+  let displayValueNum = +displayValue;
+  displayValueNum *= -1;
+  displayValue = displayValueNum.toString();
+  display.textContent = displayValue;
+}
+
 function updateText(newInput){
   if(newInput === "." && displayValue.includes(newInput)){return;}
   //append to string if last button was num
@@ -53,6 +60,7 @@ const nine = document.querySelector("#nine");
 
 const dot = document.querySelector("#dot");
 const backspace = document.querySelector("#backspace");
+const plusMinus = document.querySelector("#plusMinus");
 
 zero.addEventListener("click", () => {
   updateText("0");
@@ -98,6 +106,7 @@ dot.addEventListener("click", () => {
   updateText(".");
 });
 backspace.addEventListener("click", handleBackspace);
+plusMinus.addEventListener("click", handleNegativeBtn);
 
 //get references to operators
 const divideBtn = document.querySelector("#divide");
